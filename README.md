@@ -129,7 +129,7 @@ ecommerce/
 javac -cp "lib/*;src/main/java" src/main/java/com/ecommerce/Main.java -d target/classes
 
 # 3. Adicionar config.properties
-Caso haja um erro onde o compilador nao encontre a config properties, rode:
+# Caso haja um erro onde o compilador nao encontre a config properties, rode:
 cp src/main/resources/config.properties target/classes/
 
 # 4. Executar
