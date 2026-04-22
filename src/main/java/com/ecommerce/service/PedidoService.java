@@ -359,7 +359,7 @@ public class PedidoService {
             }
 
             // Atualizar no banco
-            if (pedidoDAO.atualizarStatus(pedidoId, novoStatus.name())) {
+            if (pedidoDAO.atualizarStatus(pedidoId, novoStatus)) {
                 System.out.println("Status do pedido atualizado com sucesso!");
                 System.out.println("Novo status: " + novoStatus);
 

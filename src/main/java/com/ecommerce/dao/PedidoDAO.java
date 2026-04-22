@@ -465,31 +465,8 @@ public class PedidoDAO {
             throw DatabaseException.selectError("item_pedido", e);
         }
     }
-    
-    /**
-     * Atualiza o status de um pedido.
-     * 
-     * @param id ID do pedido
-     * @param novoStatus Novo status do pedido
-     * @return true se atualizado com sucesso
-     * @throws DatabaseException em caso de erro
-     */
-    public boolean atualizarStatus(int id, String novoStatus) throws DatabaseException {
-        String sql = "UPDATE pedido SET status = ? WHERE id = ?";
-        
-        try (Connection conn = dbConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
-            stmt.setString(1, novoStatus);
-            stmt.setInt(2, id);
-            
-            int linhasAfetadas = stmt.executeUpdate();
-            return linhasAfetadas > 0;
-            
-        } catch (SQLException e) {
-            throw DatabaseException.updateError("pedido", e);
-        }
-    }
+
+
     
     /**
      * Extrai um objeto Pedido do ResultSet.

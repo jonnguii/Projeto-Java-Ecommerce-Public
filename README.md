@@ -282,7 +282,7 @@ pedido.confirmarPedido();
 ### Atualizando Status de Pedido
 ```java
 PedidoDAO pedidoDAO = new PedidoDAO();
-boolean sucesso = pedidoDAO.atualizarStatus(1, "CONFIRMADO");
+boolean sucesso = pedidoDAO.atualizarStatus(1, StatusPedido.CONFIRMADO);
 ```
 
 ### Usando Polimorfismo
