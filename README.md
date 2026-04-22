@@ -135,29 +135,35 @@ ecommerce/
 
 
 #### **Opção 1: Manual via Terminal**
+#### 1. Configurar o Banco de Dados
 ```bash
-# 1. Configurar o Banco de Dados
 # - Criar banco: ecommerce_db
 # - Editar src/main/resources/config.properties
 # - Executar: src/main/resources/database.sql
+```
 
-# 2. Compilar
+#### 2. Compilar:
+```bash
 javac -cp "lib/*;src/main/java" src/main/java/com/ecommerce/Main.java -d target/classes
+```
 
-# 3. Adicionar config.properties
-# Caso haja um erro onde o compilador nao encontre a config properties, rode:
-cp src/main/resources/config.properties target/classes/
-
-# 4. Executar
+#### 3. Executar:
+```bash
 java -cp "target/classes;lib/*" com.ecommerce.Main
 ```
 
+> Caso haja um erro onde o compilador nao encontre a config properties, rode:
+```bash
+cp src/main/resources/config.properties target/classes/
+```
+
 #### **Opção 2: Script Automático (Recomendado)**
-Basta dar duplo-clique no arquivo `iniciar.bat` na raiz do projeto, ou rodar no terminal:
+Basta clicar duas vezes no arquivo `iniciar.bat` na raiz do projeto, ou rodar no terminal:
 ```bash
 .\iniciar.bat
 ```
-> O script compila e executa o sistema automaticamente, sem precisar do Maven instalado.
+O script compila e executa o sistema automaticamente, sem precisar do Maven instalado.
+
 
 ## 🎮 Funcionalidades do Sistema
 
