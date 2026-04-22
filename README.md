@@ -48,39 +48,55 @@ Este projeto foi desenvolvido como trabalho interdisciplinar para demonstrar a i
 ```
 ecommerce/
 ├── src/main/java/com/ecommerce/
-│   ├── Main.java                    
-│   ├── model/                       # Classes de modelo
-│   │   ├── Pessoa.java              # Classe abstrata
-│   │   ├── Cliente.java             # Herda de Pessoa
-│   │   ├── Funcionario.java         # Herda de Pessoa
-│   │   ├── Produto.java             # Entidade principal
-│   │   ├── Categoria.java           # Categoria de produtos
-│   │   ├── Estoque.java             # Controle de estoque
-│   │   ├── Pedido.java              # Pedidos de clientes
-│   │   └── ItemPedido.java          # Itens do pedido (N:N)
-│   ├── dao/                         # Data Access Objects
+│   ├── Main.java                          # Ponto de entrada
+│   ├── MainDemo.java                      # Demonstração do sistema
+│   ├── model/                             # Classes de modelo
+│   │   ├── Pessoa.java                    # Classe abstrata
+│   │   ├── Cliente.java                   # Herda de Pessoa
+│   │   ├── Funcionario.java               # Herda de Pessoa
+│   │   ├── Produto.java                   # Entidade principal
+│   │   ├── Categoria.java                 # Categoria de produtos
+│   │   ├── Estoque.java                   # Controle de estoque
+│   │   ├── Pedido.java                    # Pedidos de clientes
+│   │   └── ItemPedido.java                # Itens do pedido (N:N)
+│   ├── dao/                               # Data Access Objects
 │   │   ├── ClienteDAO.java
 │   │   ├── ProdutoDAO.java
 │   │   ├── EstoqueDAO.java
 │   │   ├── CategoriaDAO.java
 │   │   └── PedidoDAO.java
-│   ├── service/                     # Classes de serviço
-│   │   ├── IPagamentoStrategy.java  # Interface de pagamento
+│   ├── service/                           # Camada de serviço
+│   │   ├── ClienteService.java            # Serviço de clientes
+│   │   ├── ProdutoService.java            # Serviço de produtos
+│   │   ├── PedidoService.java             # Serviço de pedidos
+│   │   ├── EstoqueService.java            # Serviço de estoque
+│   │   ├── RelatorioService.java          # Serviço de relatórios
+│   │   ├── IPagamentoStrategy.java        # Interface de pagamento
 │   │   ├── PagamentoCartaoStrategy.java
 │   │   ├── PagamentoBoletoStrategy.java
-│   │   ├── PagamentoPixStrategy.java
-│   │   └── EcommerceService.java    # Serviço principal
-│   ├── util/                        # Utilitários
-│   │   └── DatabaseConnection.java  # Conexão com BD
-│   └── exception/                   # Exceções personalizadas
+│   │   └── PagamentoPixStrategy.java
+│   ├── view/                              # Interface do usuário (console)
+│   │   ├── MenuPrincipal.java             # Menu principal
+│   │   ├── MenuCliente.java               # Menu de clientes
+│   │   ├── MenuProduto.java               # Menu de produtos
+│   │   ├── MenuEstoque.java               # Menu de estoque
+│   │   ├── MenuPedido.java                # Menu de pedidos
+│   │   ├── MenuRelatorio.java             # Menu de relatórios
+│   │   └── MenuRN.java                    # Menu regras de negócio
+│   ├── enums/                             # Enumerações
+│   │   └── StatusPedido.java              # Status dos pedidos
+│   ├── util/                              # Utilitários
+│   │   └── DatabaseConnection.java        # Conexão com BD
+│   └── exception/                         # Exceções personalizadas
 │       ├── EcommerceException.java
 │       ├── DatabaseException.java
 │       └── EstoqueInsuficienteException.java
 ├── src/main/resources/
-│   ├── database.sql                 # Script SQL completo
-│   └── config.properties            # Configurações do BD
-├── pom.xml                          # Maven dependencies
-└── README.md                        # Este arquivo
+│   ├── database.sql                       # Script SQL completo
+│   └── config.properties                  # Configurações do BD
+├── iniciar.bat                            # Script para rodar o sistema
+├── pom.xml                                # Maven dependencies
+└── README.md                              # Este arquivo
 ```
 
 ## 🛠️ Tecnologias Utilizadas
@@ -135,6 +151,13 @@ cp src/main/resources/config.properties target/classes/
 # 4. Executar
 java -cp "target/classes;lib/*" com.ecommerce.Main
 ```
+
+#### **Opção 2: Script Automático (Recomendado)**
+Basta dar duplo-clique no arquivo `iniciar.bat` na raiz do projeto, ou rodar no terminal:
+```bash
+.\iniciar.bat
+```
+> O script compila e executa o sistema automaticamente, sem precisar do Maven instalado.
 
 ## 🎮 Funcionalidades do Sistema
 
@@ -272,20 +295,5 @@ if (pagamento.validarDadosPagamento("4111111111111111")) {
 - **Validações** de dados em todas as camadas
 - **Transações** para operações críticas
 
-### Performance
-- **Índices** otimizados no banco
-- **PreparedStatement** para prevenir SQL Injection
-- **Connection Pool** implícito via JDBC
-- **Batch Operations** para múltiplas inserções
 
-
-### 📋 Estrutura Final do Projeto:
-```
-ecommerce/
-├── 📁 src/main/java/com/ecommerce/     # Código principal
-├── 📁 src/main/resources/              # Configurações e SQL
-├── 📁 target/                          # Arquivos compilados
-├── 📋 README.md                        # Documentação
-└── 📋 pom.xml                          # Maven 
-```
 

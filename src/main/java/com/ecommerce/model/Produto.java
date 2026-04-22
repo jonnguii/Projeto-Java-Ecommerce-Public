@@ -260,7 +260,7 @@ public class Produto {
     
     @Override
     public String toString() {
-        return "Produto{" +
+        return "Produto: " +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
@@ -268,7 +268,6 @@ public class Produto {
                 ", sku='" + sku + '\'' +
                 ", ativo=" + ativo +
                 ", dataCadastro=" + dataCadastro +
-                ", quantidadeCategorias=" + categorias.size() +
-                '}';
+                ", quantidadeCategorias=" + categorias.size();
     }
 }

@@ -188,10 +188,10 @@ public class Cliente extends Pessoa {
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
-    
+
     @Override
     public String toString() {
-        return "Cliente{" +
+        return "Cliente: " +
                 "id=" + getId() +
                 ", nome='" + getNome() + '\'' +
                 ", email='" + getEmail() + '\'' +
@@ -200,7 +200,6 @@ public class Cliente extends Pessoa {
                 ", cidade='" + cidade + '\'' +
                 ", estado='" + estado + '\'' +
                 ", cep='" + cep + '\'' +
-                ", ativo=" + ativo +
-                '}';
+                ", ativo=" + ativo;
     }
 }

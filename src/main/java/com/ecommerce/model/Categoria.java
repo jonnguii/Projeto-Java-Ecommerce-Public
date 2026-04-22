@@ -200,13 +200,12 @@ public class Categoria {
     
     @Override
     public String toString() {
-        return "Categoria{" +
+        return "Categoria: " +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", ativa=" + ativa +
                 ", dataCriacao=" + dataCriacao +
-                ", quantidadeProdutos=" + produtos.size() +
-                '}';
+                ", quantidadeProdutos=" + produtos.size();
     }
 }

@@ -202,7 +202,7 @@ public class Funcionario extends Pessoa {
     
     @Override
     public String toString() {
-        return "Funcionario{" +
+        return "Funcionario: " +
                 "id=" + getId() +
                 ", nome='" + getNome() + '\'' +
                 ", email='" + getEmail() + '\'' +
@@ -210,7 +210,6 @@ public class Funcionario extends Pessoa {
                 ", cargo='" + cargo + '\'' +
                 ", salario=" + salario +
                 ", departamento='" + departamento + '\'' +
-                ", ativo=" + ativo +
-                '}';
+                ", ativo=" + ativo;
     }
 }

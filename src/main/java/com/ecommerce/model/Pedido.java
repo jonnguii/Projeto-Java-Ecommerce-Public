@@ -1,5 +1,7 @@
 package com.ecommerce.model;
 
+import com.ecommerce.enums.StatusPedido;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,25 +14,7 @@ import java.util.List;
  * @version 1.0
  */
 public class Pedido {
-    
-    public enum StatusPedido {
-        PENDENTE("Pendente"),
-        CONFIRMADO("Confirmado"),
-        EM_SEPARACAO("Em Separação"),
-        ENVIADO("Enviado"),
-        ENTREGUE("Entregue"),
-        CANCELADO("Cancelado");
-        
-        private final String descricao;
-        
-        StatusPedido(String descricao) {
-            this.descricao = descricao;
-        }
-        
-        public String getDescricao() {
-            return descricao;
-        }
-    }
+
     
     private int id;
     private Cliente cliente;
@@ -372,7 +356,7 @@ public class Pedido {
     
     @Override
     public String toString() {
-        return "Pedido{" +
+        return "Pedido: " +
                 "id=" + id +
                 ", cliente=" + (cliente != null ? cliente.getNome() : "N/A") +
                 ", dataPedido=" + dataPedido +
@@ -380,7 +364,6 @@ public class Pedido {
                 ", quantidadeItens=" + itens.size() +
                 ", subtotal=" + subtotal +
                 ", desconto=" + desconto +
-                ", valorTotal=" + valorTotal +
-                '}';
+                ", valorTotal=" + valorTotal;
     }
 }

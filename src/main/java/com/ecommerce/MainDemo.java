@@ -3,18 +3,16 @@ package com.ecommerce;
 import com.ecommerce.model.*;
 
 /**
- * Classe principal de demonstração do sistema de e-commerce.
+ * Classe principal de demonstração do sistema de 'e-commerce'.
  * Versão demo que não requer conexão com banco de dados.
  * 
- * @author Sistema E-commerce
+ * @author Sistema 'E-commerce'
  * @version 1.0
  */
 public class MainDemo {
     
     /**
      * Método principal que inicia a demonstração.
-     * 
-     * @param args Argumentos da linha de comando (não utilizados)
      */
     public static void main(String[] args) {
         System.out.println("=== SISTEMA E-COMMERCE - VERSÃO DEMO ===");

@@ -278,7 +278,7 @@ public class Estoque {
     
     @Override
     public String toString() {
-        return "Estoque{" +
+        return "Estoque: " +
                 "id=" + id +
                 ", produto=" + (produto != null ? produto.getNome() : "N/A") +
                 ", quantidadeAtual=" + quantidadeAtual +
@@ -286,7 +286,6 @@ public class Estoque {
                 ", quantidadeMaxima=" + quantidadeMaxima +
                 ", localizacao='" + localizacao + '\'' +
                 ", dataUltimaAtualizacao=" + dataUltimaAtualizacao +
-                ", estoqueBaixo=" + estaComEstoqueBaixo() +
-                '}';
+                ", estoqueBaixo=" + estaComEstoqueBaixo();
     }
 }

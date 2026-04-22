@@ -197,12 +197,11 @@ public class ItemPedido {
     
     @Override
     public String toString() {
-        return "ItemPedido{" +
+        return "ItemPedido: " +
                 "id=" + id +
                 ", produto=" + (produto != null ? produto.getNome() : "N/A") +
                 ", quantidade=" + quantidade +
                 ", precoUnitario=" + precoUnitario +
-                ", subtotal=" + subtotal +
-                '}';
+                ", subtotal=" + subtotal;
     }
 }

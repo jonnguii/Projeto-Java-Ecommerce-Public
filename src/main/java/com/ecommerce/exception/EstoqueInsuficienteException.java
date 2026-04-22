@@ -31,10 +31,6 @@ public class EstoqueInsuficienteException extends EcommerceException {
     
     /**
      * Construtor completo com detalhes do estoque.
-     * 
-     * @param nomeProduto Nome do produto
-     * @param quantidadeSolicitada Quantidade solicitada
-     * @param quantidadeDisponivel Quantidade disponível
      */
     public EstoqueInsuficienteException(String nomeProduto, int quantidadeSolicitada, int quantidadeDisponivel) {
         super(String.format("Estoque insuficiente para o produto '%s'. Solicitado: %d, Disponível: %d", 
@@ -118,7 +114,7 @@ public class EstoqueInsuficienteException extends EcommerceException {
     }
     
     /**
-     * Obtém uma mensagem formatada com sugestão.
+     * Gera uma mensagem formatada com sugestão.
      * 
      * @return Mensagem formatada
      */

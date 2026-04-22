@@ -2,8 +2,7 @@ package com.ecommerce.exception;
 
 /**
  * Exceção lançada em caso de erros de banco de dados.
- * Centraliza o tratamento de exceções SQL e relacionadas.
- * 
+ *
  * @author Sistema E-commerce
  * @version 1.0
  */
@@ -38,7 +37,6 @@ public class DatabaseException extends EcommerceException {
     /**
      * Construtor com causa.
      * 
-     * @param cause Causa da exceção
      */
     public DatabaseException(Throwable cause) {
         super(cause);

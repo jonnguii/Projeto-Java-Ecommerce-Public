@@ -2,7 +2,7 @@ package com.ecommerce.exception;
 
 /**
  * Exceção base para o sistema de e-commerce.
- * Todas as exceções específicas do sistema devem herdar desta classe.
+ * Todas as exceções específicas do sistema devem herdar esta classe.
  * 
  * @author Sistema E-commerce
  * @version 1.0
@@ -37,8 +37,6 @@ public class EcommerceException extends Exception {
     
     /**
      * Construtor com causa.
-     * 
-     * @param cause Causa da exceção
      */
     public EcommerceException(Throwable cause) {
         super(cause);

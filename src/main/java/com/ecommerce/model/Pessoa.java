@@ -147,12 +147,11 @@ public abstract class Pessoa {
     
     @Override
     public String toString() {
-        return "Pessoa{" +
+        return "Pessoa: " +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
                 ", telefone='" + telefone + '\'' +
-                ", dataCadastro=" + dataCadastro +
-                '}';
+                ", dataCadastro=" + dataCadastro;
     }
 }

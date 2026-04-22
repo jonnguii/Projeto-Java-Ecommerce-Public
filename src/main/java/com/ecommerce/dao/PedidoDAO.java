@@ -1,5 +1,6 @@
 package com.ecommerce.dao;
 
+import com.ecommerce.enums.StatusPedido;
 import com.ecommerce.exception.DatabaseException;
 import com.ecommerce.model.*;
 import com.ecommerce.util.DatabaseConnection;
@@ -201,7 +202,7 @@ public class PedidoDAO {
      * @return Lista de pedidos com o status especificado
      * @throws DatabaseException em caso de erro
      */
-    public List<Pedido> listarPorStatus(Pedido.StatusPedido status) throws DatabaseException {
+    public List<Pedido> listarPorStatus(StatusPedido status) throws DatabaseException {
         String sql = "SELECT * FROM pedido WHERE status = ? ORDER BY data_pedido DESC";
         List<Pedido> pedidos = new ArrayList<>();
         
@@ -305,7 +306,7 @@ public class PedidoDAO {
      * @return true se atualizado com sucesso
      * @throws DatabaseException em caso de erro
      */
-    public boolean atualizarStatus(int id, Pedido.StatusPedido status) throws DatabaseException {
+    public boolean atualizarStatus(int id, StatusPedido status) throws DatabaseException {
         String sql = "UPDATE pedido SET status = ? WHERE id = ?";
         
         try (Connection conn = dbConnection.getConnection();
@@ -506,7 +507,7 @@ public class PedidoDAO {
         pedido.setCliente(cliente);
         
         pedido.setDataPedido(rs.getTimestamp("data_pedido").toLocalDateTime());
-        pedido.setStatus(Pedido.StatusPedido.valueOf(rs.getString("status")));
+        pedido.setStatus(StatusPedido.valueOf(rs.getString("status")));
         pedido.calcularTotais();
         pedido.setObservacoes(rs.getString("observacoes"));
         
