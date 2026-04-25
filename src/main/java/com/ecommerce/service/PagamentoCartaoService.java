@@ -7,15 +7,15 @@ package com.ecommerce.service;
  * @author Sistema E-commerce
  * @version 1.0
  */
-public class PagamentoCartaoStrategy implements IPagamentoStrategy {
-    
+public class PagamentoCartaoService implements IPagamento {
+
     private static final String NOME_FORMA = "Cartão de Crédito";
     private static final int TEMPO_PROCESSAMENTO = 30;
-    
+
     /**
      * Processa pagamento com cartão de crédito.
      * 
-     * @param valor Valor a ser pago
+     * @param valor          Valor a ser pago
      * @param dadosPagamento Número do cartão (simulação)
      * @return true se pagamento aprovado, false caso contrário
      */
@@ -24,14 +24,14 @@ public class PagamentoCartaoStrategy implements IPagamentoStrategy {
         if (!validarDadosPagamento(dadosPagamento)) {
             return false;
         }
-        
+
         // Simulação de processamento
         System.out.println("Processando pagamento de R$ " + valor + " com cartão...");
-        
+
         // Simulação: aprova se valor for positivo e dados válidos
         return valor > 0 && dadosPagamento != null && dadosPagamento.length() >= 16;
     }
-    
+
     /**
      * Obtém o nome da forma de pagamento.
      * 
@@ -41,7 +41,7 @@ public class PagamentoCartaoStrategy implements IPagamentoStrategy {
     public String getNomeFormaPagamento() {
         return NOME_FORMA;
     }
-    
+
     /**
      * Valida número do cartão (simulação básica).
      * 
@@ -53,12 +53,12 @@ public class PagamentoCartaoStrategy implements IPagamentoStrategy {
         if (dadosPagamento == null || dadosPagamento.trim().isEmpty()) {
             return false;
         }
-        
+
         // Validação básica: deve ter entre 16 e 19 dígitos
         String numeroLimpo = dadosPagamento.replaceAll("[^0-9]", "");
         return numeroLimpo.length() >= 16 && numeroLimpo.length() <= 19;
     }
-    
+
     /**
      * Obtém tempo de processamento.
      * 
@@ -68,7 +68,7 @@ public class PagamentoCartaoStrategy implements IPagamentoStrategy {
     public int getTempoProcessamentoSegundos() {
         return TEMPO_PROCESSAMENTO;
     }
-    
+
     /**
      * Obtém a bandeira do cartão (simulação).
      * 
@@ -76,10 +76,11 @@ public class PagamentoCartaoStrategy implements IPagamentoStrategy {
      * @return Bandira do cartão
      */
     public String detectarBandeira(String numeroCartao) {
-        if (numeroCartao == null) return "Desconhecida";
-        
+        if (numeroCartao == null)
+            return "Desconhecida";
+
         String numero = numeroCartao.replaceAll("[^0-9]", "");
-        
+
         if (numero.startsWith("4")) {
             return "Visa";
         } else if (numero.startsWith("5")) {

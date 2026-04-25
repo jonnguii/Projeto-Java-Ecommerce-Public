@@ -14,14 +14,14 @@ public class Cliente extends Pessoa {
     private String cidade;
     private String estado;
     private String cep;
-    private boolean ativo;
+    private com.ecommerce.enums.StatusAtividade statusAtividade;
     
     /**
      * Construtor padrão.
      */
     public Cliente() {
         super();
-        this.ativo = true;
+        this.statusAtividade = com.ecommerce.enums.StatusAtividade.ATIVO;
     }
     
     /**
@@ -37,7 +37,7 @@ public class Cliente extends Pessoa {
         super(nome, email, telefone);
         this.cpf = cpf;
         this.endereco = endereco;
-        this.ativo = true;
+        this.statusAtividade = com.ecommerce.enums.StatusAtividade.ATIVO;
     }
     
     /**
@@ -69,14 +69,14 @@ public class Cliente extends Pessoa {
      * Ativa o cliente no sistema.
      */
     public void ativar() {
-        this.ativo = true;
+        this.statusAtividade = com.ecommerce.enums.StatusAtividade.ATIVO;
     }
     
     /**
      * Desativa o cliente no sistema.
      */
     public void desativar() {
-        this.ativo = false;
+        this.statusAtividade = com.ecommerce.enums.StatusAtividade.INATIVO;
     }
     
     // Getters e Setters com encapsulamento completo
@@ -177,29 +177,41 @@ public class Cliente extends Pessoa {
      * @return true se ativo, false caso contrário
      */
     public boolean isAtivo() {
-        return ativo;
+        return statusAtividade == com.ecommerce.enums.StatusAtividade.ATIVO;
     }
     
     /**
-     * Define o status de ativação do cliente.
+     * Define o status de atividade do cliente.
      * 
-     * @param ativo Status de ativação
+     * @param statusAtividade Status de atividade
      */
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
+    public void setStatusAtividade(com.ecommerce.enums.StatusAtividade statusAtividade) {
+        this.statusAtividade = statusAtividade;
     }
 
     @Override
     public String toString() {
-        return "Cliente: " +
-                "id=" + getId() +
-                ", nome='" + getNome() + '\'' +
-                ", email='" + getEmail() + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", endereco='" + endereco + '\'' +
-                ", cidade='" + cidade + '\'' +
-                ", estado='" + estado + '\'' +
-                ", cep='" + cep + '\'' +
-                ", ativo=" + ativo;
+        String separator = "+" + "-".repeat(40) + "+";
+        String status = statusAtividade.getDescricao();
+        String dataFormatada = getDataCadastro() != null ? 
+            getDataCadastro().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "N/A";
+        String cpfFormatado = cpf != null && cpf.length() == 11 ? 
+            cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6, 9) + "-" + cpf.substring(9) : (cpf != null ? cpf : "N/A");
+        String enderecoCompleto = (endereco != null ? endereco : "") + 
+            (cidade != null ? ", " + cidade : "") + 
+            (estado != null ? "/" + estado : "") + 
+            (cep != null ? " - CEP: " + cep : "");
+        
+        return "\n" + separator +
+               "\n|        CLIENTE #" + getId() + 
+               "\n" + separator +
+               "\n| Nome:      " + getNome() +
+               "\n| Email:     " + getEmail() +
+               "\n| Telefone:  " + (getTelefone() != null ? getTelefone() : "N/A") +
+               "\n| CPF:       " + cpfFormatado +
+               "\n| Endereço:  " + (enderecoCompleto.isEmpty() ? "N/A" : enderecoCompleto) +
+               "\n| Status:    " + status +
+               "\n| Cadastro:  " + dataFormatada +
+               "\n" + separator;
     }
 }

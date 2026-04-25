@@ -2,6 +2,7 @@ package com.ecommerce.dao;
 
 import com.ecommerce.exception.DatabaseException;
 import com.ecommerce.model.Categoria;
+import com.ecommerce.enums.StatusAtividade;
 import com.ecommerce.util.DatabaseConnection;
 
 import java.sql.*;
@@ -331,7 +332,7 @@ public class CategoriaDAO {
         categoria.setId(rs.getInt("id"));
         categoria.setNome(rs.getString("nome"));
         categoria.setDescricao(rs.getString("descricao"));
-        categoria.setAtiva(rs.getBoolean("ativa"));
+        categoria.setStatusAtividade(rs.getBoolean("ativa") ? StatusAtividade.ATIVO : StatusAtividade.INATIVO);
         
         Timestamp dataCriacao = rs.getTimestamp("data_criacao");
         if (dataCriacao != null) {

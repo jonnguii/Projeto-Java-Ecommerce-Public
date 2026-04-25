@@ -7,11 +7,12 @@ import com.ecommerce.model.Cliente;
 import com.ecommerce.model.Estoque;
 import com.ecommerce.model.Funcionario;
 import com.ecommerce.model.Pedido;
+import com.ecommerce.model.Pessoa;
 import com.ecommerce.model.Produto;
-import com.ecommerce.service.IPagamentoStrategy;
-import com.ecommerce.service.PagamentoBoletoStrategy;
-import com.ecommerce.service.PagamentoCartaoStrategy;
-import com.ecommerce.service.PagamentoPixStrategy;
+import com.ecommerce.service.IPagamento;
+import com.ecommerce.service.PagamentoBoletoService;
+import com.ecommerce.service.PagamentoCartaoService;
+import com.ecommerce.service.PagamentoPixService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -93,8 +94,7 @@ public class MenuRN {
                     throw new EstoqueInsuficienteException(
                             produtoTeste.getNome(),
                             quantidadeExcessiva,
-                            estoque.getQuantidadeAtual()
-                    );
+                            estoque.getQuantidadeAtual());
                 }
             } catch (EstoqueInsuficienteException e) {
                 System.out.println("✅ Exceção capturada corretamente:");
@@ -105,7 +105,7 @@ public class MenuRN {
             // Teste 2: Verificar alerta de estoque baixo
             System.out.println("\nTeste 2: Verificação de estoque baixo...");
             System.out.println("Estoque mínimo: " + estoque.getQuantidadeMinima());
-            System.out.println("Status atual: " + (estoque.estaComEstoqueBaixo() ? "ESTOQUE BAIXO" : "NORMAL"));
+            System.out.println("Status atual: " + estoque.getStatusEstoque().getDescricao());
 
             // Teste 3: Simular pedido e dedução automática
             System.out.println("\nTeste 3: Simulação de pedido com dedução automática...");
@@ -145,14 +145,15 @@ public class MenuRN {
         System.out.println("\n=== TESTE: DESCONTOS PROGRESSIVOS ===");
 
         // Criar pedidos de teste com diferentes valores
-        double[] valoresTeste = {200.0, 600.0, 1200.0};
-        String[] descricaoTeste = {"Sem desconto", "5% de desconto", "10% de desconto"};
+        double[] valoresTeste = { 200.0, 600.0, 1200.0 };
+        String[] descricaoTeste = { "Sem desconto", "5% de desconto", "10% de desconto" };
 
         for (int i = 0; i < valoresTeste.length; i++) {
             System.out.printf("\nTeste %d - %s:%n", i + 1, descricaoTeste[i]);
 
             // Criar pedido de teste
-            Cliente clienteTeste = new Cliente("Cliente Teste", "test@email.com", "11999999999", "12345678901", "Rua Teste");
+            Cliente clienteTeste = new Cliente("Cliente Teste", "test@email.com", "11999999999", "12345678901",
+                    "Rua Teste");
             Pedido pedido = new Pedido(clienteTeste);
 
             // Adicionar item simulado
@@ -189,15 +190,15 @@ public class MenuRN {
         System.out.println("\n=== TESTE: ESTRATÉGIAS DE PAGAMENTO (POLIMORFISMO) ===");
 
         // Criar diferentes estratégias de pagamento
-        IPagamentoStrategy[] estrategias = {
-                new PagamentoCartaoStrategy(),
-                new PagamentoBoletoStrategy(),
-                new PagamentoPixStrategy()
+        IPagamento[] estrategias = {
+                new PagamentoCartaoService(),
+                new PagamentoBoletoService(),
+                new PagamentoPixService()
         };
 
         double valorTeste = 500.0;
 
-        for (IPagamentoStrategy estrategia : estrategias) {
+        for (IPagamento estrategia : estrategias) {
             System.out.printf("\nTestando %s:%n", estrategia.getNomeFormaPagamento());
             System.out.printf("Tempo de processamento: %d segundos%n", estrategia.getTempoProcessamentoSegundos());
 
@@ -205,13 +206,13 @@ public class MenuRN {
             String dadosValidos = "";
             String dadosInvalidos = "";
 
-            if (estrategia instanceof PagamentoCartaoStrategy) {
+            if (estrategia instanceof PagamentoCartaoService) {
                 dadosValidos = "4111111111111111"; // Visa de teste
                 dadosInvalidos = "123";
-            } else if (estrategia instanceof PagamentoBoletoStrategy) {
+            } else if (estrategia instanceof PagamentoBoletoService) {
                 dadosValidos = "12345678901"; // CPF válido
                 dadosInvalidos = "123";
-            } else if (estrategia instanceof PagamentoPixStrategy) {
+            } else if (estrategia instanceof PagamentoPixService) {
                 dadosValidos = "12345678901"; // CPF para PIX
                 dadosInvalidos = "123";
             }
@@ -227,7 +228,8 @@ public class MenuRN {
 
             // Testar dados inválidos
             boolean dadosInvalidosOk = estrategia.validarDadosPagamento(dadosInvalidos);
-            System.out.printf("Validação dados inválidos: %s%n", !dadosInvalidosOk ? "✅ Rejeitados" : "❌ Aceitos (erro)");
+            System.out.printf("Validação dados inválidos: %s%n",
+                    !dadosInvalidosOk ? "✅ Rejeitados" : "❌ Aceitos (erro)");
         }
 
         System.out.println("\n✅ Testes de polimorfismo concluídos!");
@@ -247,10 +249,13 @@ public class MenuRN {
                 "MAT001", "Vendedora", 3500.0);
 
         // Array polimórfico de Pessoa
-        com.ecommerce.model.Pessoa[] pessoas = {cliente, funcionario};
+        Pessoa[] pessoas = {
+                cliente,
+                funcionario
+        };
 
         System.out.println("\nDemonstração de polimorfismo:");
-        for (com.ecommerce.model.Pessoa pessoa : pessoas) {
+        for (Pessoa pessoa : pessoas) {
             System.out.printf("\n%s:%n", pessoa.getClass().getSimpleName());
             System.out.printf("Nome: %s%n", pessoa.getNome());
             System.out.printf("Email: %s%n", pessoa.getEmail());

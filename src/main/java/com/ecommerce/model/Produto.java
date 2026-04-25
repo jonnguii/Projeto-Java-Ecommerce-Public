@@ -3,6 +3,7 @@ package com.ecommerce.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import com.ecommerce.enums.StatusAtividade;
 
 /**
  * Classe que representa um produto no sistema de e-commerce.
@@ -17,7 +18,7 @@ public class Produto {
     private String descricao;
     private double preco;
     private String sku;
-    private boolean ativo;
+    private StatusAtividade statusAtividade;
     private LocalDateTime dataCadastro;
     private List<Categoria> categorias;
     
@@ -26,7 +27,7 @@ public class Produto {
      */
     public Produto() {
         this.dataCadastro = LocalDateTime.now();
-        this.ativo = true;
+        this.statusAtividade = StatusAtividade.ATIVO;
         this.categorias = new ArrayList<>();
     }
     
@@ -75,14 +76,14 @@ public class Produto {
      * Ativa o produto no sistema.
      */
     public void ativar() {
-        this.ativo = true;
+        this.statusAtividade = StatusAtividade.ATIVO;
     }
     
     /**
      * Desativa o produto no sistema.
      */
     public void desativar() {
-        this.ativo = false;
+        this.statusAtividade = StatusAtividade.INATIVO;
     }
     
     /**
@@ -210,16 +211,16 @@ public class Produto {
      * @return true se ativo, false caso contrário
      */
     public boolean isAtivo() {
-        return ativo;
+        return statusAtividade == StatusAtividade.ATIVO;
     }
     
     /**
-     * Define o status de ativação do produto.
+     * Define o status de atividade do produto.
      * 
-     * @param ativo Status de ativação
+     * @param statusAtividade Status de atividade
      */
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
+    public void setStatusAtividade(StatusAtividade statusAtividade) {
+        this.statusAtividade = statusAtividade;
     }
     
     /**
@@ -260,14 +261,21 @@ public class Produto {
     
     @Override
     public String toString() {
-        return "Produto: " +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", preco=" + preco +
-                ", sku='" + sku + '\'' +
-                ", ativo=" + ativo +
-                ", dataCadastro=" + dataCadastro +
-                ", quantidadeCategorias=" + categorias.size();
+        String separator = "+" + "-".repeat(40) + "+";
+        String status = statusAtividade.getDescricao();
+        String dataFormatada = dataCadastro != null ? 
+            dataCadastro.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "N/A";
+        
+        return "\n" + separator +
+               "\n|        PRODUTO #" + id + 
+               "\n" + separator +
+               "\n| Nome:       " + nome +
+               "\n| Descrição:  " + (descricao != null ? descricao : "N/A") +
+               "\n| Preço:      R$ " + String.format("%.2f", preco) +
+               "\n| SKU:        " + sku +
+               "\n| Status:     " + status +
+               "\n| Cadastro:   " + dataFormatada +
+               "\n| Categorias: " + categorias.size() +
+               "\n" + separator;
     }
 }

@@ -2,6 +2,7 @@ package com.ecommerce.dao;
 
 import com.ecommerce.exception.DatabaseException;
 import com.ecommerce.model.Produto;
+import com.ecommerce.enums.StatusAtividade;
 import com.ecommerce.util.DatabaseConnection;
 
 import java.sql.*;
@@ -358,7 +359,7 @@ public class ProdutoDAO {
         produto.setDescricao(rs.getString("descricao"));
         produto.setPreco(rs.getDouble("preco"));
         produto.setSku(rs.getString("sku"));
-        produto.setAtivo(rs.getBoolean("ativo"));
+        produto.setStatusAtividade(rs.getBoolean("ativo") ? StatusAtividade.ATIVO : StatusAtividade.INATIVO);
         
         Timestamp dataCadastro = rs.getTimestamp("data_cadastro");
         if (dataCadastro != null) {

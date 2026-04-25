@@ -356,14 +356,23 @@ public class Pedido {
     
     @Override
     public String toString() {
-        return "Pedido: " +
-                "id=" + id +
-                ", cliente=" + (cliente != null ? cliente.getNome() : "N/A") +
-                ", dataPedido=" + dataPedido +
-                ", status=" + status.getDescricao() +
-                ", quantidadeItens=" + itens.size() +
-                ", subtotal=" + subtotal +
-                ", desconto=" + desconto +
-                ", valorTotal=" + valorTotal;
+        String separator = "+" + "-".repeat(40) + "+";
+        String dataFormatada = dataPedido != null ? 
+            dataPedido.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "N/A";
+        String dataEntregaFormatada = dataEntrega != null ? 
+            dataEntrega.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "Pendente";
+        
+        return "\n" + separator +
+               "\n|        PEDIDO #" + id + 
+               "\n" + separator +
+               "\n| Cliente:    " + (cliente != null ? cliente.getNome() : "N/A") +
+               "\n| Data:       " + dataFormatada +
+               "\n| Status:     " + (status != null ? status.getDescricao() : "N/A") +
+               "\n| Itens:      " + itens.size() + " produto(s)" +
+               "\n| Subtotal:   R$ " + String.format("%.2f", subtotal) +
+               "\n| Desconto:   R$ " + String.format("%.2f", desconto) + " (" + String.format("%.1f%%", getPercentualDesconto()) + ")" +
+               "\n| Total:      R$ " + String.format("%.2f", valorTotal) +
+               "\n| Entrega:    " + dataEntregaFormatada +
+               "\n" + separator;
     }
 }

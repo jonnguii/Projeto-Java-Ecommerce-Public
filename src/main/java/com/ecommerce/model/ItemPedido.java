@@ -197,11 +197,10 @@ public class ItemPedido {
     
     @Override
     public String toString() {
-        return "ItemPedido: " +
-                "id=" + id +
-                ", produto=" + (produto != null ? produto.getNome() : "N/A") +
-                ", quantidade=" + quantidade +
-                ", precoUnitario=" + precoUnitario +
-                ", subtotal=" + subtotal;
+        return String.format("  ├─ %-25s  %d x R$ %.2f = R$ %.2f",
+                (produto != null ? produto.getNome() : "N/A"),
+                quantidade,
+                precoUnitario,
+                subtotal);
     }
 }

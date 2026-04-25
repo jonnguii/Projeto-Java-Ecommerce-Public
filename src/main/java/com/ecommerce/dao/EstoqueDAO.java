@@ -395,7 +395,7 @@ public class EstoqueDAO {
         produto.setDescricao(rs.getString("prod_descricao"));
         produto.setPreco(rs.getDouble("prod_preco"));
         produto.setSku(rs.getString("prod_sku"));
-        produto.setAtivo(rs.getBoolean("prod_ativo"));
+        produto.setStatusAtividade(rs.getBoolean("prod_ativo") ? com.ecommerce.enums.StatusAtividade.ATIVO : com.ecommerce.enums.StatusAtividade.INATIVO);
         
         Timestamp dataCadastro = rs.getTimestamp("prod_data_cadastro");
         if (dataCadastro != null) {

@@ -3,9 +3,11 @@ package com.ecommerce.service;
 import com.ecommerce.dao.ClienteDAO;
 import com.ecommerce.dao.EstoqueDAO;
 import com.ecommerce.dao.ProdutoDAO;
+import com.ecommerce.enums.StatusEstoque;
 import com.ecommerce.exception.DatabaseException;
 import com.ecommerce.model.Estoque;
 import com.ecommerce.model.Produto;
+import com.ecommerce.util.InputUtils;
 
 import java.util.List;
 import java.util.Scanner;
@@ -42,16 +44,7 @@ public class EstoqueService {
             System.out.println("-".repeat(100));
 
             for (Estoque estoque : estoques) {
-                String status;
-                if (estoque.getQuantidadeAtual() == 0) {
-                    status = "SEM ESTOQUE";
-                } else if (estoque.getQuantidadeAtual() < estoque.getQuantidadeMinima()) {
-                    status = "ABAIXO";
-                } else if (estoque.getQuantidadeAtual() > estoque.getQuantidadeMaxima()) {
-                    status = "ACIMA";
-                } else {
-                    status = "NORMAL";
-                }
+                StatusEstoque status = estoque.getStatusEstoque();
 
                 System.out.printf("%-5d %-25s %-15d %-15d %-15d %-15s %-10s%n",
                         estoque.getId(),
@@ -60,7 +53,7 @@ public class EstoqueService {
                         estoque.getQuantidadeMinima(),
                         estoque.getQuantidadeMaxima(),
                         estoque.getLocalizacao(),
-                        status);
+                        status.getDescricao());
             }
 
         } catch (DatabaseException e) {
@@ -89,27 +82,8 @@ public class EstoqueService {
                 return;
             }
 
-            System.out.println("\n=== ESTOQUE DO PRODUTO ===");
-            System.out.println("Produto: " + estoque.getProduto().getNome());
-            System.out.println("Quantidade atual: " + estoque.getQuantidadeAtual());
-            System.out.println("Quantidade mínima: " + estoque.getQuantidadeMinima());
-            System.out.println("Quantidade máxima: " + estoque.getQuantidadeMaxima());
-            System.out.println("Localização: " + estoque.getLocalizacao());
+            System.out.println(estoque);
 
-            // Determinar status correto
-            String status;
-            if (estoque.getQuantidadeAtual() == 0) {
-                status = "SEM ESTOQUE";
-            } else if (estoque.getQuantidadeAtual() < estoque.getQuantidadeMinima()) {
-                status = "ABAIXO";
-            } else if (estoque.getQuantidadeAtual() > estoque.getQuantidadeMaxima()) {
-                status = "ACIMA";
-            } else {
-                status = "NORMAL";
-            }
-
-            System.out.println("Status: " + status);
-            System.out.println("Última atualização: " + estoque.getDataUltimaAtualizacao());
 
         } catch (NumberFormatException e) {
             System.out.println("ID inválido!");
@@ -122,9 +96,8 @@ public class EstoqueService {
      * Adiciona produtos ao estoque.
      */
     public void adicionarEstoque() {
-        System.out.print("Digite o ID do produto: ");
         try {
-            int id = Integer.parseInt(scanner.nextLine());
+            int id = InputUtils.lerIntPositivo(scanner, "Digite o ID do produto: ");
             Produto produto = produtoDAO.buscarPorId(id);
 
             if (produto == null) {
@@ -132,13 +105,7 @@ public class EstoqueService {
                 return;
             }
 
-            System.out.print("Digite a quantidade a adicionar: ");
-            int quantidade = Integer.parseInt(scanner.nextLine());
-
-            if (quantidade <= 0) {
-                System.out.println("Quantidade deve ser positiva!");
-                return;
-            }
+            int quantidade = InputUtils.lerIntPositivo(scanner, "Digite a quantidade a adicionar: ");
 
             if (estoqueDAO.adicionarEstoque(id, quantidade)) {
                 System.out.println("Estoque atualizado com sucesso!");
@@ -163,9 +130,8 @@ public class EstoqueService {
      * Remove produtos do estoque.
      */
     public void removerEstoque() {
-        System.out.print("Digite o ID do produto: ");
         try {
-            int id = Integer.parseInt(scanner.nextLine());
+            int id = InputUtils.lerIntPositivo(scanner, "Digite o ID do produto: ");
             Produto produto = produtoDAO.buscarPorId(id);
 
             if (produto == null) {
@@ -180,13 +146,7 @@ public class EstoqueService {
             }
 
             System.out.println("Quantidade atual em estoque: " + estoque.getQuantidadeAtual());
-            System.out.print("Digite a quantidade a remover: ");
-            int quantidade = Integer.parseInt(scanner.nextLine());
-
-            if (quantidade <= 0) {
-                System.out.println("Quantidade deve ser positiva!");
-                return;
-            }
+            int quantidade = InputUtils.lerIntPositivo(scanner, "Digite a quantidade a remover: ");
 
             if (!estoque.temEstoqueSuficiente(quantidade)) {
                 System.out.println("Estoque insuficiente! Disponível: " + estoque.getQuantidadeAtual());

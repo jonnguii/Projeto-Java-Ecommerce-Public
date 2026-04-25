@@ -5,6 +5,7 @@ import com.ecommerce.dao.ProdutoDAO;
 import com.ecommerce.exception.DatabaseException;
 import com.ecommerce.model.Estoque;
 import com.ecommerce.model.Produto;
+import com.ecommerce.util.InputUtils;
 
 import java.util.List;
 import java.util.Scanner;
@@ -137,17 +138,10 @@ public class ProdutoService {
         try {
             System.out.println("\n=== CADASTRAR NOVO PRODUTO ===");
 
-            System.out.print("Nome: ");
-            String nome = scanner.nextLine();
-
-            System.out.print("Descrição: ");
-            String descricao = scanner.nextLine();
-
-            System.out.print("Preço: ");
-            double preco = Double.parseDouble(scanner.nextLine());
-
-            System.out.print("SKU: ");
-            String sku = scanner.nextLine();
+            String nome = InputUtils.lerStringObrigatoria(scanner, "Nome: ");
+            String descricao = InputUtils.lerStringObrigatoria(scanner, "Descrição: ");
+            double preco = InputUtils.lerDoublePositivo(scanner, "Preço: ");
+            String sku = InputUtils.lerStringObrigatoria(scanner, "SKU: ");
 
             Produto produto = new Produto(nome, descricao, preco, sku);
 
@@ -164,15 +158,22 @@ public class ProdutoService {
             System.out.print("Localização do estoque (ex: Galeria A, Prateleira 1, etc.): ");
             String localizacao = scanner.nextLine();
 
+            System.out.print("Estoque mínimo (padrão 10): ");
+            String minStr = scanner.nextLine();
+            int min = minStr.isEmpty() ? 10 : Integer.parseInt(minStr);
+
+            System.out.print("Estoque máximo (padrão 1000): ");
+            String maxStr = scanner.nextLine();
+            int max = maxStr.isEmpty() ? 1000 : Integer.parseInt(maxStr);
+
             // Cria registro de estoque automaticamente com localização
-            Estoque estoque = new Estoque(produtoInserido, 0);
-            estoque.setLocalizacao(localizacao.isEmpty() ? "Principal" : localizacao);
+            Estoque estoque = new Estoque(produtoInserido, 0, min, max, localizacao.isEmpty() ? "Principal" : localizacao);
             estoqueDAO.inserir(estoque);
             System.out
                     .println("Registro de estoque criado automaticamente com localização: " + estoque.getLocalizacao());
 
         } catch (NumberFormatException e) {
-            System.out.println("Preço inválido!");
+            System.out.println("Valor numérico inválido!");
         } catch (DatabaseException e) {
             System.err.println("Erro ao cadastrar produto: " + e.getMessage());
         }
@@ -231,7 +232,7 @@ public class ProdutoService {
             }
 
         } catch (NumberFormatException e) {
-            System.out.println("Preço inválido!");
+            System.out.println("Valor numérico inválido!");
         } catch (DatabaseException e) {
             System.err.println("Erro ao atualizar produto: " + e.getMessage());
         }

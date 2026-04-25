@@ -249,17 +249,17 @@ public class PedidoService {
     public String getStatusComCor(StatusPedido status) {
         switch (status) {
             case PENDENTE:
-                return "\u001B[33m" + status + "\u001B[0m"; // Amarelo
+                return status.toString(); // Amarelo (removido)
             case CONFIRMADO:
-                return "\u001B[32m" + status + "\u001B[0m"; // Verde
+                return status.toString(); // Verde (removido)
             case EM_SEPARACAO:
-                return "\u001B[34m" + status + "\u001B[0m"; // Azul
+                return status.toString(); // Azul (removido)
             case ENVIADO:
-                return "\u001B[36m" + status + "\u001B[0m"; // Ciano
+                return status.toString(); // Ciano (removido)
             case ENTREGUE:
-                return "\u001B[32m" + status + "\u001B[0m"; // Verde forte
+                return status.toString(); // Verde forte (removido)
             case CANCELADO:
-                return "\u001B[31m" + status + "\u001B[0m"; // Vermelho
+                return status.toString(); // Vermelho (removido)
             default:
                 return status.toString();
         }

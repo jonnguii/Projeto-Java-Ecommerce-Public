@@ -13,14 +13,14 @@ public class Funcionario extends Pessoa {
     private String cargo;
     private double salario;
     private String departamento;
-    private boolean ativo;
+    private com.ecommerce.enums.StatusAtividade statusAtividade;
     
     /**
      * Construtor padrão.
      */
     public Funcionario() {
         super();
-        this.ativo = true;
+        this.statusAtividade = com.ecommerce.enums.StatusAtividade.ATIVO;
     }
     
     /**
@@ -39,7 +39,7 @@ public class Funcionario extends Pessoa {
         this.matricula = matricula;
         this.cargo = cargo;
         this.salario = salario;
-        this.ativo = true;
+        this.statusAtividade = com.ecommerce.enums.StatusAtividade.ATIVO;
     }
     
     /**
@@ -84,14 +84,14 @@ public class Funcionario extends Pessoa {
      * Ativa o funcionário no sistema.
      */
     public void ativar() {
-        this.ativo = true;
+        this.statusAtividade = com.ecommerce.enums.StatusAtividade.ATIVO;
     }
     
     /**
      * Desativa o funcionário no sistema.
      */
     public void desativar() {
-        this.ativo = false;
+        this.statusAtividade = com.ecommerce.enums.StatusAtividade.INATIVO;
     }
     
     /**
@@ -188,28 +188,37 @@ public class Funcionario extends Pessoa {
      * @return true se ativo, false caso contrário
      */
     public boolean isAtivo() {
-        return ativo;
+        return statusAtividade == com.ecommerce.enums.StatusAtividade.ATIVO;
     }
     
     /**
-     * Define o status de ativação do funcionário.
+     * Define o status de atividade do funcionário.
      * 
-     * @param ativo Status de ativação
+     * @param statusAtividade Status de atividade
      */
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
+    public void setStatusAtividade(com.ecommerce.enums.StatusAtividade statusAtividade) {
+        this.statusAtividade = statusAtividade;
     }
     
     @Override
     public String toString() {
-        return "Funcionario: " +
-                "id=" + getId() +
-                ", nome='" + getNome() + '\'' +
-                ", email='" + getEmail() + '\'' +
-                ", matricula='" + matricula + '\'' +
-                ", cargo='" + cargo + '\'' +
-                ", salario=" + salario +
-                ", departamento='" + departamento + '\'' +
-                ", ativo=" + ativo;
+        String separator = "+" + "-".repeat(40) + "+";
+        String status = statusAtividade.getDescricao();
+        String dataFormatada = getDataCadastro() != null ? 
+            getDataCadastro().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "N/A";
+        
+        return "\n" + separator +
+               "\n|     FUNCIONÁRIO #" + getId() + 
+               "\n" + separator +
+               "\n| Nome:         " + getNome() +
+               "\n| Email:        " + getEmail() +
+               "\n| Telefone:     " + (getTelefone() != null ? getTelefone() : "N/A") +
+               "\n| Matrícula:    " + matricula +
+               "\n| Cargo:        " + cargo +
+               "\n| Salário:      R$ " + String.format("%.2f", salario) +
+               "\n| Departamento: " + (departamento != null ? departamento : "N/A") +
+               "\n| Status:       " + status +
+               "\n| Cadastro:     " + dataFormatada +
+               "\n" + separator;
     }
 }

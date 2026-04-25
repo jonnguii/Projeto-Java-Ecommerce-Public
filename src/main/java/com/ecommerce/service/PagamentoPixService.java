@@ -9,16 +9,16 @@ import java.util.UUID;
  * @author Sistema E-commerce
  * @version 1.0
  */
-public class PagamentoPixStrategy implements IPagamentoStrategy {
-    
+public class PagamentoPixService implements IPagamento {
+
     private static final String NOME_FORMA = "PIX";
     private static final int TEMPO_PROCESSAMENTO = 10;
-    
+
     /**
      * Processa pagamento via PIX.
      * Gera uma chave PIX aleatória para simulação.
      * 
-     * @param valor Valor a ser pago
+     * @param valor          Valor a ser pago
      * @param dadosPagamento Chave PIX do pagador (simulação)
      * @return true se pagamento processado, false caso contrário
      */
@@ -27,18 +27,18 @@ public class PagamentoPixStrategy implements IPagamentoStrategy {
         if (!validarDadosPagamento(dadosPagamento)) {
             return false;
         }
-        
+
         System.out.println("Processando pagamento PIX de R$ " + valor);
         System.out.println("Chave PIX origem: " + dadosPagamento);
-        
+
         String chaveDestino = gerarChavePix();
         System.out.println("Chave PIX destino: " + chaveDestino);
         System.out.println("Aguardando confirmação...");
-        
+
         // Simulação: PIX é aprovado instantaneamente
         return valor > 0;
     }
-    
+
     /**
      * Obtém o nome da forma de pagamento.
      * 
@@ -48,7 +48,7 @@ public class PagamentoPixStrategy implements IPagamentoStrategy {
     public String getNomeFormaPagamento() {
         return NOME_FORMA;
     }
-    
+
     /**
      * Valida chave PIX (simulação básica).
      * 
@@ -60,9 +60,9 @@ public class PagamentoPixStrategy implements IPagamentoStrategy {
         if (dadosPagamento == null || dadosPagamento.trim().isEmpty()) {
             return false;
         }
-        
+
         String chave = dadosPagamento.trim();
-        
+
         // Validação básica: pode ser CPF, CNPJ, email ou telefone
         if (chave.matches("\\d{11}")) { // CPF
             return true;
@@ -75,10 +75,10 @@ public class PagamentoPixStrategy implements IPagamentoStrategy {
         } else if (chave.matches("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}")) { // UUID
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * Obtém tempo de processamento.
      * 
@@ -88,7 +88,7 @@ public class PagamentoPixStrategy implements IPagamentoStrategy {
     public int getTempoProcessamentoSegundos() {
         return TEMPO_PROCESSAMENTO;
     }
-    
+
     /**
      * Gera uma chave PIX aleatória (UUID).
      * 
@@ -97,7 +97,7 @@ public class PagamentoPixStrategy implements IPagamentoStrategy {
     private String gerarChavePix() {
         return UUID.randomUUID().toString();
     }
-    
+
     /**
      * Identifica o tipo de chave PIX.
      * 
@@ -105,10 +105,11 @@ public class PagamentoPixStrategy implements IPagamentoStrategy {
      * @return Tipo da chave
      */
     public String identificarTipoChave(String chave) {
-        if (chave == null) return "Desconhecida";
-        
+        if (chave == null)
+            return "Desconhecida";
+
         chave = chave.trim();
-        
+
         if (chave.matches("\\d{11}")) {
             return "CPF";
         } else if (chave.matches("\\d{14}")) {
@@ -123,7 +124,7 @@ public class PagamentoPixStrategy implements IPagamentoStrategy {
             return "Desconhecida";
         }
     }
-    
+
     /**
      * Verifica se o valor está dentro dos limites do PIX.
      * 

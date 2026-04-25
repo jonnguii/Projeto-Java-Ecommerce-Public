@@ -17,6 +17,7 @@ public class RelatorioService {
 
     Scanner scanner = new Scanner(System.in);
     EstoqueDAO estoqueDAO = new EstoqueDAO();
+    com.ecommerce.dao.PedidoDAO pedidoDAO = new com.ecommerce.dao.PedidoDAO();
 
     /**
      * Gera relatório completo de estoque com JOINs.
@@ -52,23 +53,23 @@ public class RelatorioService {
 
                 String status;
                 if (estoque.getQuantidadeAtual() == 0) {
-                    status = "SEM ESTOQUE";
+                    status = com.ecommerce.enums.StatusEstoque.ZERADO.getDescricao();
                 } else if (estoque.estaComEstoqueBaixo()) {
-                    status = "ESTOQUE BAIXO";
+                    status = com.ecommerce.enums.StatusEstoque.BAIXO.getDescricao();
                 } else {
-                    status = "NORMAL";
+                    status = com.ecommerce.enums.StatusEstoque.NORMAL.getDescricao();
                 }
 
                 System.out.printf("%-5d %-25s %-10s %-8d %-8d %-8d %-12s %-10.2f %-12s%n",
-                                estoque.getId(),
-                                estoque.getProduto().getNome(),
-                                estoque.getProduto().getSku(),
-                                estoque.getQuantidadeAtual(),
-                                estoque.getQuantidadeMinima(),
-                                estoque.getQuantidadeMaxima(),
-                                estoque.getLocalizacao(),
-                                valorProdutoEstoque,
-                                status);
+                        estoque.getId(),
+                        estoque.getProduto().getNome(),
+                        estoque.getProduto().getSku(),
+                        estoque.getQuantidadeAtual(),
+                        estoque.getQuantidadeMinima(),
+                        estoque.getQuantidadeMaxima(),
+                        estoque.getLocalizacao(),
+                        valorProdutoEstoque,
+                        status);
             }
 
             System.out.println("-".repeat(120));
@@ -77,6 +78,74 @@ public class RelatorioService {
             System.out.printf("Produtos sem estoque: %d%n", produtosSemEstoque);
             System.out.printf("Produtos com estoque baixo: %d%n", produtosEstoqueBaixo);
             System.out.printf("Valor total em estoque: R$ %.2f%n", valorTotalEstoque);
+
+        } catch (DatabaseException e) {
+            System.err.println("Erro ao gerar relatório: " + e.getMessage());
+        }
+    }
+
+    public void relatorioProdutosMaisVendidos() {
+        try {
+            System.out.println("\n=== RELATÓRIO DE PRODUTOS MAIS VENDIDOS ===");
+            System.out.print("Quantos produtos deseja visualizar? (Padrão 10): ");
+            String limiteStr = scanner.nextLine();
+            int limite = limiteStr.isEmpty() ? 10 : Integer.parseInt(limiteStr);
+
+            List<Object[]> relatorio = pedidoDAO.listarProdutosMaisVendidos(limite);
+
+            if (relatorio.isEmpty()) {
+                System.out.println("Nenhuma venda registrada até o momento.");
+                return;
+            }
+
+            System.out.println("-".repeat(90));
+            System.out.printf("%-5s %-30s %-15s %-15s %-15s%n", "ID", "Produto", "SKU", "Qtd Vendida",
+                    "Valor Arrecadado");
+            System.out.println("-".repeat(90));
+
+            for (Object[] linha : relatorio) {
+                System.out.printf("%-5d %-30s %-15s %-15d R$ %-12.2f%n",
+                        (Integer) linha[0],
+                        (String) linha[1],
+                        (String) linha[2],
+                        (Integer) linha[3],
+                        (Double) linha[4]);
+            }
+            System.out.println("-".repeat(90));
+
+        } catch (NumberFormatException e) {
+            System.out.println("Por favor, digite um número válido.");
+        } catch (DatabaseException e) {
+            System.err.println("Erro ao gerar relatório: " + e.getMessage());
+        }
+    }
+
+    public void relatorioProdutosEstoqueBaixo() {
+        try {
+            List<Estoque> estoques = estoqueDAO.listarEstoqueBaixo();
+
+            if (estoques.isEmpty()) {
+                System.out.println("Nenhum produto com estoque baixo encontrado.");
+                return;
+            }
+
+            System.out.println("\n=== RELATÓRIO DE PRODUTOS COM ESTOQUE BAIXO ===");
+            System.out.println("Data/Hora: " + java.time.LocalDateTime.now());
+            System.out.println("-".repeat(90));
+            System.out.printf("%-5s %-25s %-15s %-10s %-10s %-10s%n", "ID", "Produto", "Localização", "Atual", "Mínimo",
+                    "Status");
+            System.out.println("-".repeat(90));
+
+            for (Estoque estoque : estoques) {
+                System.out.printf("%-5d %-25s %-15s %-10d %-10d %-10s%n",
+                        estoque.getProduto().getId(),
+                        estoque.getProduto().getNome(),
+                        estoque.getLocalizacao(),
+                        estoque.getQuantidadeAtual(),
+                        estoque.getQuantidadeMinima(),
+                        estoque.getStatusEstoque().getDescricao());
+            }
+            System.out.println("-".repeat(90));
 
         } catch (DatabaseException e) {
             System.err.println("Erro ao gerar relatório: " + e.getMessage());

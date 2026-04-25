@@ -3,6 +3,7 @@ package com.ecommerce.service;
 import com.ecommerce.dao.ClienteDAO;
 import com.ecommerce.exception.DatabaseException;
 import com.ecommerce.model.Cliente;
+import com.ecommerce.util.InputUtils;
 
 import java.util.List;
 import java.util.Scanner;
@@ -99,46 +100,29 @@ public class ClienteService {
         try {
             System.out.println("\n=== CADASTRAR NOVO CLIENTE ===");
 
-            System.out.print("Nome: ");
-            String nome = scanner.nextLine();
+            String nome = InputUtils.lerStringObrigatoria(scanner, "Nome: ");
+            String email = InputUtils.lerEmail(scanner, "Email: ");
+            
+            // Verifica email duplicado logo após a leitura
+            if (clienteDAO.emailJaExiste(email, null)) {
+                System.out.println("Email já cadastrado! Operação cancelada.");
+                return;
+            }
 
-            System.out.print("Email: ");
-            String email = scanner.nextLine();
-
-            System.out.print("Telefone: ");
-            String telefone = scanner.nextLine();
-
-            System.out.print("CPF: ");
-            String cpf = scanner.nextLine();
-
-            System.out.print("Endereço: ");
-            String endereco = scanner.nextLine();
-
-            System.out.print("Cidade: ");
-            String cidade = scanner.nextLine();
-
-            System.out.print("Estado (UF): ");
-            String estado = scanner.nextLine();
-
-            System.out.print("CEP: ");
-            String cep = scanner.nextLine();
+            String telefone = InputUtils.lerTelefone(scanner, "Telefone (ex: 11999999999): ");
+            String cpf = InputUtils.lerCpf(scanner, "CPF (somente números): ");
+            String endereco = InputUtils.lerStringObrigatoria(scanner, "Endereço: ");
+            
+            String cidade = InputUtils.lerCidade(scanner, "Cidade: ");
+            String estado = InputUtils.lerUf(scanner, "Estado (UF): ");
+            String cep = InputUtils.lerCep(scanner, "CEP: ");
 
             Cliente cliente = new Cliente(nome, email, telefone, cpf, endereco);
             cliente.setCidade(cidade);
             cliente.setEstado(estado);
             cliente.setCep(cep);
 
-            // Valida dados
-            if (!cliente.validarDados()) {
-                System.out.println("Dados inválidos! Verifique nome, email e CPF.");
-                return;
-            }
 
-            // Verifica email duplicado
-            if (clienteDAO.emailJaExiste(email, null)) {
-                System.out.println("Email já cadastrado!");
-                return;
-            }
 
             Cliente clienteInserido = clienteDAO.inserir(cliente);
             System.out.println("Cliente cadastrado com sucesso! ID: " + clienteInserido.getId());

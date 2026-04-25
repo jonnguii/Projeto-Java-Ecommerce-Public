@@ -375,6 +375,51 @@ public class PedidoDAO {
     }
     
     /**
+     * Gera relatório de produtos mais vendidos.
+     * 
+     * @param limite Quantidade máxima de produtos a retornar
+     * @return Lista com os produtos mais vendidos
+     * @throws DatabaseException em caso de erro
+     */
+    public List<Object[]> listarProdutosMaisVendidos(int limite) throws DatabaseException {
+        String sql = "SELECT p.id, p.nome, p.sku, " +
+                     "SUM(ip.quantidade) as total_vendido, " +
+                     "SUM(ip.subtotal * (ped.valor_total / NULLIF(ped.subtotal, 0))) as valor_faturado " +
+                     "FROM item_pedido ip " +
+                     "JOIN produto p ON ip.produto_id = p.id " +
+                     "JOIN pedido ped ON ip.pedido_id = ped.id " +
+                     "WHERE ped.status != 'CANCELADO' " +
+                     "GROUP BY p.id, p.nome, p.sku " +
+                     "ORDER BY total_vendido DESC " +
+                     "LIMIT ?";
+        
+        List<Object[]> relatorio = new ArrayList<>();
+        
+        try (Connection conn = dbConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, limite);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Object[] linha = new Object[5];
+                    linha[0] = rs.getInt("id");
+                    linha[1] = rs.getString("nome");
+                    linha[2] = rs.getString("sku");
+                    linha[3] = rs.getInt("total_vendido");
+                    linha[4] = rs.getDouble("valor_faturado");
+                    relatorio.add(linha);
+                }
+            }
+            
+        } catch (SQLException e) {
+            throw DatabaseException.selectError("item_pedido", e);
+        }
+        
+        return relatorio;
+    }
+
+    /**
      * Gera relatório de vendas por período.
      * 
      * @param dataInicio Data inicial
@@ -448,7 +493,7 @@ public class PedidoDAO {
                     produto.setDescricao(rs.getString("prod_descricao"));
                     produto.setPreco(rs.getDouble("prod_preco"));
                     produto.setSku(rs.getString("prod_sku"));
-                    produto.setAtivo(rs.getBoolean("prod_ativo"));
+                    produto.setStatusAtividade(rs.getBoolean("prod_ativo") ? com.ecommerce.enums.StatusAtividade.ATIVO : com.ecommerce.enums.StatusAtividade.INATIVO);
                     
                     Timestamp dataCadastro = rs.getTimestamp("prod_data_cadastro");
                     if (dataCadastro != null) {

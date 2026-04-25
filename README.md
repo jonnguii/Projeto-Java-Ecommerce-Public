@@ -84,9 +84,11 @@ ecommerce/
 │   │   ├── MenuRelatorio.java             # Menu de relatórios
 │   │   └── MenuRN.java                    # Menu regras de negócio
 │   ├── enums/                             # Enumerações
-│   │   └── StatusPedido.java              # Status dos pedidos
+│   │   ├── StatusPedido.java              # Status dos pedidos
+│   │   └── StatusAtividade.java           # Status de atividade (Ativo/Inativo)
 │   ├── util/                              # Utilitários
-│   │   └── DatabaseConnection.java        # Conexão com BD
+│   │   ├── DatabaseConnection.java        # Conexão com BD
+│   │   └── InputUtils.java                # Validação de dados em tempo real
 │   └── exception/                         # Exceções personalizadas
 │       ├── EcommerceException.java
 │       ├── DatabaseException.java
@@ -295,11 +297,11 @@ if (pagamento.validarDadosPagamento("4111111111111111")) {
 
 ## 🎯 Destaques Técnicos
 
-### Boas Práticas
+### Boas Práticas e UX
+- **Validação em Tempo Real**: Classe `InputUtils` força loops de inserção (com Regex) até o usuário acertar formatos de e-mail, CPF, CEP, UF, etc.
+- **Tratamento Amigável de Erros**: O sistema captura violações de restrição do PostgreSQL (ex: CPF duplicado) e traduz para mensagens compreensíveis ("O CPF informado já está cadastrado").
+- **Enumerações Padronizadas**: Uso de `StatusAtividade` e `StatusPedido` no lugar de strings ou booleans.
 - **Javadoc** completo em todas as classes/métodos públicos
-- **Tratamento de Exceções** específico e informativo
-- **Validações** de dados em todas as camadas
-- **Transações** para operações críticas
 
 
 

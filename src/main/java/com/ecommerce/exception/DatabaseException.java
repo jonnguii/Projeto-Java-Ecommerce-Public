@@ -59,8 +59,9 @@ public class DatabaseException extends EcommerceException {
      * @return DatabaseException
      */
     public static DatabaseException insertError(String tabela, Throwable causa) {
+        String mensagemAmigavel = formatarMensagemAmigavel(causa.getMessage());
         return new DatabaseException(
-            "Erro ao inserir dados na tabela " + tabela + ": " + causa.getMessage(), 
+            "Erro ao inserir dados na tabela " + tabela + ": " + mensagemAmigavel, 
             causa
         );
     }
@@ -73,8 +74,9 @@ public class DatabaseException extends EcommerceException {
      * @return DatabaseException
      */
     public static DatabaseException updateError(String tabela, Throwable causa) {
+        String mensagemAmigavel = formatarMensagemAmigavel(causa.getMessage());
         return new DatabaseException(
-            "Erro ao atualizar dados na tabela " + tabela + ": " + causa.getMessage(), 
+            "Erro ao atualizar dados na tabela " + tabela + ": " + mensagemAmigavel, 
             causa
         );
     }
@@ -118,5 +120,30 @@ public class DatabaseException extends EcommerceException {
             "Erro ao conectar ao banco de dados: " + causa.getMessage(), 
             causa
         );
+    }
+    
+    /**
+     * Formata mensagens de erro complexas (ex: PostgreSQL) para o usuário final.
+     * 
+     * @param mensagemOriginal Mensagem de erro original
+     * @return Mensagem amigável
+     */
+    private static String formatarMensagemAmigavel(String mensagemOriginal) {
+        if (mensagemOriginal == null) return "Erro desconhecido no banco de dados.";
+        
+        if (mensagemOriginal.contains("duplicate key value violates unique constraint")) {
+            if (mensagemOriginal.contains("cpf")) {
+                return "O CPF informado já está cadastrado no sistema.";
+            } else if (mensagemOriginal.contains("email")) {
+                return "O Email informado já está cadastrado no sistema.";
+            } else if (mensagemOriginal.contains("sku")) {
+                return "O SKU informado já está cadastrado no sistema.";
+            } else if (mensagemOriginal.contains("matricula")) {
+                return "A Matrícula informada já está cadastrada no sistema.";
+            }
+            return "Um dado único informado já existe no sistema.";
+        }
+        
+        return mensagemOriginal;
     }
 }

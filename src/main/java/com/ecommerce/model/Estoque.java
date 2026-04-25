@@ -1,6 +1,7 @@
 package com.ecommerce.model;
 
 import java.time.LocalDateTime;
+import com.ecommerce.enums.StatusEstoque;
 
 /**
  * Classe que representa o controle de estoque de um produto.
@@ -276,16 +277,45 @@ public class Estoque {
         this.localizacao = localizacao;
     }
     
+    /**
+     * Obtém o status atual do estoque baseado nas quantidades.
+     * 
+     * @return StatusEstoque correspondente ao estado atual
+     */
+    public StatusEstoque getStatusEstoque() {
+        if (estaZerado()) {
+            return StatusEstoque.ZERADO;
+        } else if (estaComEstoqueBaixo()) {
+            return StatusEstoque.BAIXO;
+        } else if (quantidadeAtual > quantidadeMaxima) {
+            return StatusEstoque.ACIMA_DO_MAXIMO;
+        } else {
+            return StatusEstoque.NORMAL;
+        }
+    }
+    
     @Override
     public String toString() {
-        return "Estoque: " +
-                "id=" + id +
-                ", produto=" + (produto != null ? produto.getNome() : "N/A") +
-                ", quantidadeAtual=" + quantidadeAtual +
-                ", quantidadeMinima=" + quantidadeMinima +
-                ", quantidadeMaxima=" + quantidadeMaxima +
-                ", localizacao='" + localizacao + '\'' +
-                ", dataUltimaAtualizacao=" + dataUltimaAtualizacao +
-                ", estoqueBaixo=" + estaComEstoqueBaixo();
+        String separator = "+" + "-".repeat(40) + "+";
+        String dataFormatada = dataUltimaAtualizacao != null ? 
+            dataUltimaAtualizacao.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "N/A";
+        
+        int barSize = 20;
+        int filled = quantidadeMaxima > 0 ? (int)((double) quantidadeAtual / quantidadeMaxima * barSize) : 0;
+        filled = Math.min(filled, barSize);
+        String bar = "█".repeat(filled) + "░".repeat(barSize - filled);
+        
+        return "\n" + separator +
+               "\n|   ESTOQUE - " + (produto != null ? produto.getNome() : "N/A") +
+               "\n" + separator +
+               "\n| Produto:     " + (produto != null ? produto.getNome() : "N/A") +
+               "\n| Quantidade:  " + quantidadeAtual + " un" +
+               "\n| Mínimo:      " + quantidadeMinima + " un" +
+               "\n| Máximo:      " + quantidadeMaxima + " un" +
+               "\n| Ocupação:    [" + bar + "] " + String.format("%.1f%%", getPercentualOcupacao()) +
+               "\n| Localização: " + (localizacao != null ? localizacao : "N/A") +
+               "\n| Status:      " + getStatusEstoque().getDescricaoColorida() +
+               "\n| Atualizado:  " + dataFormatada +
+               "\n" + separator;
     }
 }

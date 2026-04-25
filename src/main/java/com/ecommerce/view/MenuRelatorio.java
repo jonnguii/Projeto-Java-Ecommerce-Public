@@ -23,10 +23,10 @@ public class MenuRelatorio {
 
             switch (opcao) {
                 case 1:
-                    System.out.println("Funcionalidade em desenvolvimento...");
+                    relatorioService.relatorioProdutosMaisVendidos();
                     break;
                 case 2:
-                    System.out.println("Funcionalidade em desenvolvimento...");
+                    relatorioService.relatorioProdutosEstoqueBaixo();
                     break;
                 case 0:
                     return;
