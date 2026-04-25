@@ -71,10 +71,10 @@ ecommerce/
 │   │   ├── PedidoService.java             # Serviço de pedidos
 │   │   ├── EstoqueService.java            # Serviço de estoque
 │   │   ├── RelatorioService.java          # Serviço de relatórios
-│   │   ├── IPagamentoStrategy.java        # Interface de pagamento
-│   │   ├── PagamentoCartaoStrategy.java
-│   │   ├── PagamentoBoletoStrategy.java
-│   │   └── PagamentoPixStrategy.java
+│   │   ├── IPagamento.java                # Interface de pagamento
+│   │   ├── PagamentoCartaoService.java
+│   │   ├── PagamentoBoletoService.java
+│   │   └── PagamentoPixService.java
 │   ├── view/                              # Interface do usuário (console)
 │   │   ├── MenuPrincipal.java             # Menu principal
 │   │   ├── MenuCliente.java               # Menu de clientes
@@ -88,7 +88,7 @@ ecommerce/
 │   │   └── StatusAtividade.java           # Status de atividade (Ativo/Inativo)
 │   ├── util/                              # Utilitários
 │   │   ├── DatabaseConnection.java        # Conexão com BD
-│   │   └── InputUtils.java                # Validação de dados em tempo real
+│   │   └── ValidatorUtil.java             # Validação de dados em tempo real
 │   └── exception/                         # Exceções personalizadas
 │       ├── EcommerceException.java
 │       ├── DatabaseException.java
@@ -289,7 +289,7 @@ boolean sucesso = pedidoDAO.atualizarStatus(1, StatusPedido.CONFIRMADO);
 
 ### Usando Polimorfismo
 ```java
-IPagamentoStrategy pagamento = new PagamentoCartaoStrategy();
+IPagamento pagamento = new PagamentoCartaoService();
 if (pagamento.validarDadosPagamento("4111111111111111")) {
     pagamento.processarPagamento(500.00, "4111111111111111");
 }
@@ -298,7 +298,7 @@ if (pagamento.validarDadosPagamento("4111111111111111")) {
 ## 🎯 Destaques Técnicos
 
 ### Boas Práticas e UX
-- **Validação em Tempo Real**: Classe `InputUtils` força loops de inserção (com Regex) até o usuário acertar formatos de e-mail, CPF, CEP, UF, etc.
+- **Validação em Tempo Real**: Classe `ValidatorUtil` força loops de inserção (com Regex) até o usuário acertar formatos de e-mail, CPF, CEP, UF, etc.
 - **Tratamento Amigável de Erros**: O sistema captura violações de restrição do PostgreSQL (ex: CPF duplicado) e traduz para mensagens compreensíveis ("O CPF informado já está cadastrado").
 - **Enumerações Padronizadas**: Uso de `StatusAtividade` e `StatusPedido` no lugar de strings ou booleans.
 - **Javadoc** completo em todas as classes/métodos públicos
