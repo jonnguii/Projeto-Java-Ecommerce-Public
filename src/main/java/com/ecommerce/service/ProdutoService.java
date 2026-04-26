@@ -5,7 +5,7 @@ import com.ecommerce.dao.ProdutoDAO;
 import com.ecommerce.exception.DatabaseException;
 import com.ecommerce.model.Estoque;
 import com.ecommerce.model.Produto;
-import com.ecommerce.util.InputUtils;
+import com.ecommerce.util.ValidatorUtil;
 
 import java.util.List;
 import java.util.Scanner;
@@ -138,10 +138,10 @@ public class ProdutoService {
         try {
             System.out.println("\n=== CADASTRAR NOVO PRODUTO ===");
 
-            String nome = InputUtils.lerStringObrigatoria(scanner, "Nome: ");
-            String descricao = InputUtils.lerStringObrigatoria(scanner, "Descrição: ");
-            double preco = InputUtils.lerDoublePositivo(scanner, "Preço: ");
-            String sku = InputUtils.lerStringObrigatoria(scanner, "SKU: ");
+            String nome = ValidatorUtil.lerStringObrigatoria(scanner, "Nome: ");
+            String descricao = ValidatorUtil.lerStringObrigatoria(scanner, "Descrição: ");
+            double preco = ValidatorUtil.lerDoublePositivo(scanner, "Preço: ");
+            String sku = ValidatorUtil.lerStringObrigatoria(scanner, "SKU: ");
 
             Produto produto = new Produto(nome, descricao, preco, sku);
 

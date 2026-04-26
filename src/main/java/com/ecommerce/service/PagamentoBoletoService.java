@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Sistema E-commerce
  * @version 1.0
  */
-public class PagamentoBoletoStrategy implements IPagamentoStrategy {
+public class PagamentoBoletoService implements IPagamento {
     
     private static final String NOME_FORMA = "Boleto Bancário";
     private static final int TEMPO_PROCESSAMENTO = 5;

@@ -7,7 +7,7 @@ import com.ecommerce.enums.StatusEstoque;
 import com.ecommerce.exception.DatabaseException;
 import com.ecommerce.model.Estoque;
 import com.ecommerce.model.Produto;
-import com.ecommerce.util.InputUtils;
+import com.ecommerce.util.ValidatorUtil;
 
 import java.util.List;
 import java.util.Scanner;
@@ -97,7 +97,7 @@ public class EstoqueService {
      */
     public void adicionarEstoque() {
         try {
-            int id = InputUtils.lerIntPositivo(scanner, "Digite o ID do produto: ");
+            int id = ValidatorUtil.lerIntPositivo(scanner, "Digite o ID do produto: ");
             Produto produto = produtoDAO.buscarPorId(id);
 
             if (produto == null) {
@@ -105,7 +105,7 @@ public class EstoqueService {
                 return;
             }
 
-            int quantidade = InputUtils.lerIntPositivo(scanner, "Digite a quantidade a adicionar: ");
+            int quantidade = ValidatorUtil.lerIntPositivo(scanner, "Digite a quantidade a adicionar: ");
 
             if (estoqueDAO.adicionarEstoque(id, quantidade)) {
                 System.out.println("Estoque atualizado com sucesso!");
@@ -131,7 +131,7 @@ public class EstoqueService {
      */
     public void removerEstoque() {
         try {
-            int id = InputUtils.lerIntPositivo(scanner, "Digite o ID do produto: ");
+            int id = ValidatorUtil.lerIntPositivo(scanner, "Digite o ID do produto: ");
             Produto produto = produtoDAO.buscarPorId(id);
 
             if (produto == null) {
@@ -146,7 +146,7 @@ public class EstoqueService {
             }
 
             System.out.println("Quantidade atual em estoque: " + estoque.getQuantidadeAtual());
-            int quantidade = InputUtils.lerIntPositivo(scanner, "Digite a quantidade a remover: ");
+            int quantidade = ValidatorUtil.lerIntPositivo(scanner, "Digite a quantidade a remover: ");
 
             if (!estoque.temEstoqueSuficiente(quantidade)) {
                 System.out.println("Estoque insuficiente! Disponível: " + estoque.getQuantidadeAtual());

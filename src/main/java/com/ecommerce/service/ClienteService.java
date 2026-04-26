@@ -3,7 +3,7 @@ package com.ecommerce.service;
 import com.ecommerce.dao.ClienteDAO;
 import com.ecommerce.exception.DatabaseException;
 import com.ecommerce.model.Cliente;
-import com.ecommerce.util.InputUtils;
+import com.ecommerce.util.ValidatorUtil;
 
 import java.util.List;
 import java.util.Scanner;
@@ -100,8 +100,8 @@ public class ClienteService {
         try {
             System.out.println("\n=== CADASTRAR NOVO CLIENTE ===");
 
-            String nome = InputUtils.lerStringObrigatoria(scanner, "Nome: ");
-            String email = InputUtils.lerEmail(scanner, "Email: ");
+            String nome = ValidatorUtil.lerStringObrigatoria(scanner, "Nome: ");
+            String email = ValidatorUtil.lerEmail(scanner, "Email: ");
             
             // Verifica email duplicado logo após a leitura
             if (clienteDAO.emailJaExiste(email, null)) {
@@ -109,13 +109,13 @@ public class ClienteService {
                 return;
             }
 
-            String telefone = InputUtils.lerTelefone(scanner, "Telefone (ex: 11999999999): ");
-            String cpf = InputUtils.lerCpf(scanner, "CPF (somente números): ");
-            String endereco = InputUtils.lerStringObrigatoria(scanner, "Endereço: ");
+            String telefone = ValidatorUtil.lerTelefone(scanner, "Telefone (ex: 11999999999): ");
+            String cpf = ValidatorUtil.lerCpf(scanner, "CPF (somente números): ");
+            String endereco = ValidatorUtil.lerStringObrigatoria(scanner, "Endereço: ");
             
-            String cidade = InputUtils.lerCidade(scanner, "Cidade: ");
-            String estado = InputUtils.lerUf(scanner, "Estado (UF): ");
-            String cep = InputUtils.lerCep(scanner, "CEP: ");
+            String cidade = ValidatorUtil.lerCidade(scanner, "Cidade: ");
+            String estado = ValidatorUtil.lerUf(scanner, "Estado (UF): ");
+            String cep = ValidatorUtil.lerCep(scanner, "CEP: ");
 
             Cliente cliente = new Cliente(nome, email, telefone, cpf, endereco);
             cliente.setCidade(cidade);
