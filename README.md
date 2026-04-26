@@ -15,7 +15,7 @@ Este projeto foi desenvolvido como trabalho interdisciplinar para demonstrar a i
 
 ### ✅ OOP - Quatro Pilares
 - **Herança**: Classe abstrata `Pessoa` com subclasses `Cliente` e `Funcionario`
-- **Polimorfismo**: Interface `IPagamentoStrategy` com múltiplas implementações
+- **Polimorfismo**: Interface `IPagamento` com múltiplas implementações
 - **Encapsulamento**: Todos os atributos privados com getters/setters
 - **Abstração**: Classes abstratas e interfaces definindo contratos
 
